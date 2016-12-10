@@ -2,6 +2,6 @@
 
 a dance experiment using [A-frame](https://aframe.io) with [aframe-extra physics component](https://github.com/donmccurdy/aframe-extras/tree/master/src/physics) and 4 HTC Vive controllers (2 paired for the feet, 2 tethered via USB for hands).
 
-inspired by [https://github.com/Utopiah/aframe-soccer](https://github.com/Utopiah/aframe-soccer) from [Fabien Benetou](https://fabien.benetou.fr) or [@Utopiah](https://twitter.com/utopiah) on Twitter and [A-frame Slack](https://aframevr.slack.com).
+inspired by the [aframe-soccer](https://github.com/Utopiah/aframe-soccer) project from [Fabien Benetou](https://fabien.benetou.fr) or [@Utopiah](https://twitter.com/utopiah) on Twitter and [A-frame Slack](https://aframevr.slack.com).
 
 
