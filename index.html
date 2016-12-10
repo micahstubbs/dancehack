@@ -10,7 +10,7 @@
     <script src="components/aframe-extras.min.js"></script>
   </head>
   <body>
-    <a-scene fog="color: #bc483e; near: 0; far: 65;" physics='gravity: -9.8; debug: false; restitution: 0.5"' antialias='true'>
+    <a-scene fog="color: #bc483e; near: 0; far: 65;" physics='gravity: -9.8; debug: true; restitution: 0.5"' antialias='true'>
       <a-assets>
         <a-mixin id="cube"
                  geometry="primitive: box; height: 0.30; width: 0.30; depth: 0.30"
@@ -21,17 +21,26 @@
                  material="color: #F2E646;"></a-mixin>
 	      <a-asset-item id="hand-obj" src="./assets/models/hand.obj"></a-asset-item>
 	      <a-asset-item id="foot-obj" src="./assets/models/foot.obj"></a-asset-item>
+
       </a-assets>
    
       <!-- Full body order might vary so make sure to check yours BEFORE you strap anything on your feet -->
       <a-entity tracked-controls="controller: 0; id: OpenVR Gamepad" obj-model="obj: #hand-obj;" scale="0.005 0.005 0.005"
-      static-body sphere-collider="objects: .throwable" grab></a-entity>
+      static-body sphere-collider="objects: .throwable" grab>
+        <a-sphere color="orange" radius="0.05"></a-sphere>
+      </a-entity>
       <a-entity tracked-controls="controller: 1; id: OpenVR Gamepad" obj-model="obj: #hand-obj;" scale="0.005 0.005 0.005"
-      static-body sphere-collider="objects: .throwable" grab></a-entity>
+      static-body sphere-collider="objects: .throwable" grab>
+        <a-sphere color="orange" radius="0.05"></a-sphere>
+      </a-entity>
       <a-entity tracked-controls="controller: 2; id: OpenVR Gamepad" obj-model="obj: #foot-obj;" scale="0.1 0.1 0.1"
-      static-body sphere-collider="objects: .throwable" grab></a-entity>
+      static-body sphere-collider="objects: .throwable" grab>
+        <a-sphere color="orange" radius="0.05"></a-sphere>
+      </a-entity>
       <a-entity tracked-controls="controller: 3; id: OpenVR Gamepad" obj-model="obj: #foot-obj;" scale="0.1 0.1 0.1"
-      static-body sphere-collider="objects: .throwable" grab></a-entity>
+      static-body sphere-collider="objects: .throwable" grab>
+        <a-sphere color="orange" radius="0.05"></a-sphere>
+      </a-entity>
 
         <!-- Environment -->
         <a-entity id="sky"
