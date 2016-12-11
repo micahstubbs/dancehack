@@ -1,16 +1,17 @@
   <head>
     <meta charset="utf-8">
-    <title>Full body soccer using Aframe</title>
-    <meta name="description" content="Full body soccer - A-Frame">
+    <title>A-frame Quadrille</title>
+    <meta name="description" content="A-frame Quadrille">
     <script src="js/aframe.js"></script>
     <script src="components/aabb-collider.js"></script>
     <script src="components/grab.js"></script>
     <script src="components/ground.js"></script>
     <script src="shaders/skyGradient.js"></script>
     <script src="components/aframe-extras.min.js"></script>
+    <script src="./d3.v4.min.js"></script>
   </head>
   <body>
-    <a-scene fog="color: #bc483e; near: 0; far: 65;" physics='gravity: -9.8; debug: true; restitution: 0.5"' antialias='true'>
+    <a-scene physics='gravity: -9.8; debug: false; restitution: 0.5"' antialias='true'>
       <a-assets>
         <a-mixin id="cube"
                  geometry="primitive: box; height: 0.30; width: 0.30; depth: 0.30"
@@ -21,36 +22,221 @@
                  material="color: #F2E646;"></a-mixin>
 	      <a-asset-item id="hand-obj" src="./assets/models/hand.obj"></a-asset-item>
 	      <a-asset-item id="foot-obj" src="./assets/models/foot.obj"></a-asset-item>
+        <img id="starfield" src="8192x4096-starfield.png"></img>
 
       </a-assets>
+
+      <a-entity id="trails">
+      </a-entity>
    
-      <!-- Full body order might vary so make sure to check yours BEFORE you strap anything on your feet -->
-      <a-entity tracked-controls="controller: 0; id: OpenVR Gamepad" obj-model="obj: #hand-obj;" scale="0.005 0.005 0.005"
-      static-body sphere-collider="objects: .throwable" grab>
-        <a-sphere color="orange" radius="0.05"></a-sphere>
+      <!-- style the objects bound to the tracked Vive controllers -->
+      <a-entity 
+        tracked-controls="controller: 0; id: OpenVR Gamepad"
+        obj-model="obj: #cube-grabbed;"
+        scale="1 1 1"
+        static-body sphere-collider="objects: .throwable"
+        transparent="true"
+        opacity="1"
+        grab
+        id='vc0'>
+        <a-sphere
+          id="sphere0"
+          color="#c8c8c8"
+          radius="0.04"
+          scale="1 1 1"
+          opacity="0.7"
+        ></a-sphere>
       </a-entity>
-      <a-entity tracked-controls="controller: 1; id: OpenVR Gamepad" obj-model="obj: #hand-obj;" scale="0.005 0.005 0.005"
-      static-body sphere-collider="objects: .throwable" grab>
-        <a-sphere color="orange" radius="0.05"></a-sphere>
+      <a-entity 
+        tracked-controls="controller: 1; id: OpenVR Gamepad"
+        obj-model="obj: #cube-grabbed;" 
+        scale="1 1 1"
+        static-body sphere-collider="objects: .throwable"
+        transparent="true"
+        opacity="0"
+        grab
+        id='vc1'>
+        <a-sphere
+          id="sphere1"
+          color="orange"
+          radius="0.04"
+          scale="1 1 1"
+          opacity="0.7"
+        ></a-sphere>
       </a-entity>
-      <a-entity tracked-controls="controller: 2; id: OpenVR Gamepad" obj-model="obj: #foot-obj;" scale="0.1 0.1 0.1"
-      static-body sphere-collider="objects: .throwable" grab>
-        <a-sphere color="orange" radius="0.05"></a-sphere>
+      <a-entity 
+        tracked-controls="controller: 2; id: OpenVR Gamepad"
+        obj-model="obj: #cube-grabbed;"
+        scale="1 1 1"
+        static-body sphere-collider="objects: .throwable"
+        grab
+        id='vc2'>
+        <a-sphere
+          id="sphere2"
+          color="orange"
+          radius="0.04"
+          scale="1 1 1"
+          opacity="0.7"
+        ></a-sphere>
       </a-entity>
-      <a-entity tracked-controls="controller: 3; id: OpenVR Gamepad" obj-model="obj: #foot-obj;" scale="0.1 0.1 0.1"
-      static-body sphere-collider="objects: .throwable" grab>
-        <a-sphere color="orange" radius="0.05"></a-sphere>
+      <a-entity
+        tracked-controls="controller: 3; id: OpenVR Gamepad"
+        obj-model="obj: #cube-grabbed;"
+        scale="1 1 1"
+        static-body sphere-collider="objects: .throwable"
+        grab
+        id='vc3'>
+        <a-sphere
+          id="sphere3"
+          color="orange"
+          radius="0.04"
+          scale="1 1 1"
+          opacity="0.7"
+        ></a-sphere>
       </a-entity>
 
         <!-- Environment -->
         <a-entity id="sky"
                   geometry="primitive: sphere; radius: 65;"
-                  material="shader: skyGradient; colorBottom: #333333; colorTop: #222222; side: back"></a-entity>
+                  material="shader: flat; colorBottom: #333333; colorTop: #222222; side: back; src: #starfield">
+        </a-entity>
          <a-entity visible="false" ground scale="1 0.2 1" position="0 -2 0"></a-entity>
-         <a-entity light="type: point; color: #f4f4f4; intensity: 0.2; distance: 0" position="8 10 18"></a-entity>
-         <a-entity light="type: point; color: #f4f4f4; intensity: 0.6; distance: 0" position="-8 10 -18"></a-entity>
-         <a-entity light="type: ambient; color: #f4f4f4; intensity: 0.4;" position="-8 10 -18"></a-entity>
+         <a-entity light="type: point; color: #fff; intensity: 0.2; distance: 50; decay: 3" position="8 10 18"></a-entity>
+         <a-entity light="type: point; color: #fff; intensity: 0.8; distance: 50; decay: 3" position="-8 10 -18"></a-entity>
+         <a-entity light="type: ambient; color: #fff; intensity: 0.6; distance: 50; decay: 3" position="-8 10 -18"></a-entity>
       </a-entity>
     </a-scene>
+    <script>
+      // light color #f4f4f4
+      //material="shader: skyGradient; colorBottom: #333333; colorTop: #222222; side: back"
+      // fog="color: #fff; near: 20; far: 65;"
+
+      // 128 beats per minutes is ~= 469 millisecond per beat
+      const msPerBeat = 469;
+      function render () {
+        console.log('render function called');
+        d3.select('#sphere0')
+          .attr('color', `${d3.interpolateRainbow(Math.random())}`);
+        
+        d3.select('#sphere1')
+          .attr('color', `${d3.interpolateRainbow(Math.random())}`);
+        
+        d3.select('#sphere2')
+          .attr('color', `${d3.interpolateRainbow(Math.random())}`);
+        
+        d3.select('#sphere3')
+          .attr('color', `${d3.interpolateRainbow(Math.random())}`);
+      }
+
+      function sphere0Pulse() {
+        let color = d3.interpolateRainbow(Math.random());
+        let x = Math.random();
+        let y = Math.random();
+        let z = Math.random();
+
+        d3.select('#sphere0')
+          .attr('color', `${color}`)
+          .attr('scale', `${x} ${y} ${z}`);
+
+        let position = d3.select('#vc0').attr('position');
+        // console.log('position', position);
+
+        d3.select('#trails')
+          .append('a-sphere')
+            .attr('radius', "0.04")
+            .attr('opacity', '0.5')
+            .attr('color', `${color}`)
+            .attr('scale', `${x} ${y} ${z}`)
+            .attr('position', position)
+            .transition()
+              .delay(msPerBeat * 4)
+              .remove();
+      }
+      function sphere1Pulse() {
+        let color = d3.interpolateRainbow(Math.random());
+        let x = Math.random();
+        let y = Math.random();
+        let z = Math.random();
+
+        d3.select('#sphere1')
+          .attr('color', `${color}`)
+          .attr('scale', `${x} ${y} ${z}`);
+
+        let position = d3.select('#vc1').attr('position');
+        // console.log('position', position);
+
+        d3.select('#trails')
+          .append('a-sphere')
+            .attr('radius', "0.04")
+            .attr('opacity', '0.5')
+            .attr('color', `${color}`)
+            .attr('scale', `${x} ${y} ${z}`)
+            .attr('position', position)
+            .transition()
+              .delay(msPerBeat * 4)
+              .remove();
+      }
+      function sphere2Pulse() {
+        let color = d3.interpolateRainbow(Math.random());
+        let x = Math.random();
+        let y = Math.random();
+        let z = Math.random();
+
+        d3.select('#sphere2')
+          .attr('color', `${color}`)
+          .attr('scale', `${x} ${y} ${z}`);
+
+        let position = d3.select('#vc2').attr('position');
+        // console.log('position', position);
+
+        d3.select('#trails')
+          .append('a-sphere')
+            .attr('radius', "0.04")
+            .attr('opacity', '0.5')
+            .attr('color', `${color}`)
+            .attr('scale', `${x} ${y} ${z}`)
+            .attr('position', position)
+            .transition()
+              .delay(msPerBeat * 4)
+              .remove();
+      }
+      function sphere3Pulse() {
+        let color = d3.interpolateRainbow(Math.random());
+        let x = Math.random();
+        let y = Math.random();
+        let z = Math.random();
+
+        d3.select('#sphere3')
+          .attr('color', `${color}`)
+          .attr('scale', `${x} ${y} ${z}`);
+
+        let position = d3.select('#vc3').attr('position');
+        // console.log('position', position);
+
+        d3.select('#trails')
+          .append('a-sphere')
+            .attr('radius', "0.04")
+            .attr('opacity', '0.5')
+            .attr('color', `${color}`)
+            .attr('scale', `${x} ${y} ${z}`)
+            .attr('position', position)
+            .transition()
+              .delay(msPerBeat * 4)
+              .remove();
+      }
+
+      var sceneEl = document.querySelector('a-scene');
+      if (sceneEl.hasLoaded) {
+        render();
+      } else {
+        sceneEl.addEventListener('loaded', render);
+      }
+
+      // 128 beats per minutes is ~= 469 millisecond per beat
+      window.setInterval(sphere0Pulse, msPerBeat / 4);
+      window.setInterval(sphere1Pulse, msPerBeat / 4);
+      window.setInterval(sphere2Pulse, msPerBeat / 4);
+      window.setInterval(sphere3Pulse, msPerBeat / 4);
+    </script>
   </body>
 </html>
