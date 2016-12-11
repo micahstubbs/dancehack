@@ -8,7 +8,8 @@
     <script src="components/ground.js"></script>
     <script src="shaders/skyGradient.js"></script>
     <script src="components/aframe-extras.min.js"></script>
-    <script src="./d3.v4.min.js"></script>
+    <script src="d3.v4.min.js"></script>
+    <script src="d3-scale-chromatic.v1.min.js"></script>
   </head>
   <body>
     <a-scene physics='gravity: -9.8; debug: false; restitution: 0.5"' antialias='true'>
@@ -111,25 +112,29 @@
       //material="shader: skyGradient; colorBottom: #333333; colorTop: #222222; side: back"
       // fog="color: #fff; near: 20; far: 65;"
 
-      // 128 beats per minutes is ~= 469 millisecond per beat
-      const msPerBeat = 469;
+      const clippedScale = d3.scaleLinear()
+        .domain([0, 1])
+        .range([0.35, 0.90])
+
+      const beatsPerMinute = 112;
+      const msPerBeat = (beatsPerMinute / 60) * 1000;
       function render () {
         console.log('render function called');
         d3.select('#sphere0')
-          .attr('color', `${d3.interpolateRainbow(Math.random())}`);
+          .attr('color', `${d3.interpolateGreys(Math.random())}`);
         
         d3.select('#sphere1')
-          .attr('color', `${d3.interpolateRainbow(Math.random())}`);
+          .attr('color', `${d3.interpolatePuBu(Math.random())}`);
         
         d3.select('#sphere2')
-          .attr('color', `${d3.interpolateRainbow(Math.random())}`);
+          .attr('color', `${d3.interpolatePuRd(Math.random())}`);
         
         d3.select('#sphere3')
           .attr('color', `${d3.interpolateRainbow(Math.random())}`);
       }
 
       function sphere0Pulse() {
-        let color = d3.interpolateRainbow(Math.random());
+        let color = d3.interpolateGreys(Math.random());
         let x = Math.random();
         let y = Math.random();
         let z = Math.random();
@@ -141,6 +146,8 @@
         let position = d3.select('#vc0').attr('position');
         // console.log('position', position);
 
+        const trailFactor = 2;
+
         d3.select('#trails')
           .append('a-sphere')
             .attr('radius', "0.04")
@@ -149,11 +156,11 @@
             .attr('scale', `${x} ${y} ${z}`)
             .attr('position', position)
             .transition()
-              .delay(msPerBeat * 4)
+              .delay(msPerBeat * trailFactor)
               .remove();
       }
       function sphere1Pulse() {
-        let color = d3.interpolateRainbow(Math.random());
+        let color = d3.interpolatePuBu(clippedScale(Math.random()));
         let x = Math.random();
         let y = Math.random();
         let z = Math.random();
@@ -173,11 +180,11 @@
             .attr('scale', `${x} ${y} ${z}`)
             .attr('position', position)
             .transition()
-              .delay(msPerBeat * 4)
+              .delay(msPerBeat * trailFactor)
               .remove();
       }
       function sphere2Pulse() {
-        let color = d3.interpolateRainbow(Math.random());
+        let color = d3.interpolatePuRd(clippedScale(Math.random()));
         let x = Math.random();
         let y = Math.random();
         let z = Math.random();
@@ -197,7 +204,7 @@
             .attr('scale', `${x} ${y} ${z}`)
             .attr('position', position)
             .transition()
-              .delay(msPerBeat * 4)
+              .delay(msPerBeat * trailFactor)
               .remove();
       }
       function sphere3Pulse() {
@@ -221,7 +228,7 @@
             .attr('scale', `${x} ${y} ${z}`)
             .attr('position', position)
             .transition()
-              .delay(msPerBeat * 4)
+              .delay(msPerBeat * trailFactor)
               .remove();
       }
 
@@ -233,10 +240,10 @@
       }
 
       // 128 beats per minutes is ~= 469 millisecond per beat
-      window.setInterval(sphere0Pulse, msPerBeat / 4);
-      window.setInterval(sphere1Pulse, msPerBeat / 4);
-      window.setInterval(sphere2Pulse, msPerBeat / 4);
-      window.setInterval(sphere3Pulse, msPerBeat / 4);
+      window.setInterval(sphere0Pulse, msPerBeat / 16);
+      window.setInterval(sphere1Pulse, msPerBeat / 16);
+      window.setInterval(sphere2Pulse, msPerBeat / 16);
+      window.setInterval(sphere3Pulse, msPerBeat / 16);
     </script>
   </body>
 </html>
