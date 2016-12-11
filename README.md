@@ -1,7 +1,9 @@
 # dancehack
 
-a dance experiment using [A-frame](https://aframe.io) with [aframe-extra physics component](https://github.com/donmccurdy/aframe-extras/tree/master/src/physics) and 4 HTC Vive controllers (2 paired for the feet, 2 tethered via USB for hands).
+a dance experiment using [A-frame](https://aframe.io) with [aframe-extra physics component](https://github.com/donmccurdy/aframe-extras/tree/master/src/physics) and [4 HTC Vive controllers](https://steamcommunity.com/app/358720/discussions/0/357286532029364178/)
 
-inspired by the [aframe-soccer](https://github.com/Utopiah/aframe-soccer) project from [Fabien Benetou](https://fabien.benetou.fr) or [@Utopiah](https://twitter.com/utopiah) on Twitter and [A-frame Slack](https://aframevr.slack.com).
+presented here as performed at the [2016 dancehackday](http://www.dancehack.org/) in at [CounterPulse](http://www.dancehack.org/) in San Francisco
+
+inspired by the [aframe-soccer](https://github.com/Utopiah/aframe-soccer) project from [Fabien Benetou](https://fabien.benetou.fr) and [@Utopiah](https://twitter.com/utopiah) on Twitter as well as the [A-frame Slack](https://aframevr.slack.com)
 
 
