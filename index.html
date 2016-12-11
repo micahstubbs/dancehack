@@ -118,6 +118,14 @@
 
       const beatsPerMinute = 112;
       const msPerBeat = (beatsPerMinute / 60) * 1000;
+      const trailFactor = 0.40;
+      const scaleHash = {
+        '0': {},
+        '1': {},
+        '2': {},
+        '3': {}
+      };
+
       function render () {
         console.log('render function called');
         d3.select('#sphere0')
@@ -138,87 +146,64 @@
         let x = Math.random();
         let y = Math.random();
         let z = Math.random();
+        scaleHash['0']['x'] = x;
+        scaleHash['0']['y'] = y;
+        scaleHash['0']['z'] = z;
 
         d3.select('#sphere0')
           .attr('color', `${color}`)
           .attr('scale', `${x} ${y} ${z}`);
-
-        let position = d3.select('#vc0').attr('position');
-        // console.log('position', position);
-
-        const trailFactor = 2;
-
-        d3.select('#trails')
-          .append('a-sphere')
-            .attr('radius', "0.04")
-            .attr('opacity', '0.5')
-            .attr('color', `${color}`)
-            .attr('scale', `${x} ${y} ${z}`)
-            .attr('position', position)
-            .transition()
-              .delay(msPerBeat * trailFactor)
-              .remove();
       }
       function sphere1Pulse() {
         let color = d3.interpolatePuBu(clippedScale(Math.random()));
         let x = Math.random();
         let y = Math.random();
         let z = Math.random();
+        scaleHash['1']['x'] = x;
+        scaleHash['1']['y'] = y;
+        scaleHash['1']['z'] = z;
 
         d3.select('#sphere1')
           .attr('color', `${color}`)
           .attr('scale', `${x} ${y} ${z}`);
-
-        let position = d3.select('#vc1').attr('position');
-        // console.log('position', position);
-
-        d3.select('#trails')
-          .append('a-sphere')
-            .attr('radius', "0.04")
-            .attr('opacity', '0.5')
-            .attr('color', `${color}`)
-            .attr('scale', `${x} ${y} ${z}`)
-            .attr('position', position)
-            .transition()
-              .delay(msPerBeat * trailFactor)
-              .remove();
       }
       function sphere2Pulse() {
         let color = d3.interpolatePuRd(clippedScale(Math.random()));
         let x = Math.random();
         let y = Math.random();
         let z = Math.random();
+        scaleHash['2']['x'] = x;
+        scaleHash['2']['y'] = y;
+        scaleHash['2']['z'] = z;
 
         d3.select('#sphere2')
           .attr('color', `${color}`)
           .attr('scale', `${x} ${y} ${z}`);
-
-        let position = d3.select('#vc2').attr('position');
-        // console.log('position', position);
-
-        d3.select('#trails')
-          .append('a-sphere')
-            .attr('radius', "0.04")
-            .attr('opacity', '0.5')
-            .attr('color', `${color}`)
-            .attr('scale', `${x} ${y} ${z}`)
-            .attr('position', position)
-            .transition()
-              .delay(msPerBeat * trailFactor)
-              .remove();
       }
       function sphere3Pulse() {
         let color = d3.interpolateRainbow(Math.random());
         let x = Math.random();
         let y = Math.random();
         let z = Math.random();
+        scaleHash['3']['x'] = x;
+        scaleHash['3']['y'] = y;
+        scaleHash['3']['z'] = z;
 
         d3.select('#sphere3')
           .attr('color', `${color}`)
           .attr('scale', `${x} ${y} ${z}`);
+      }
 
-        let position = d3.select('#vc3').attr('position');
-        // console.log('position', position);
+      function makeTrails(i) {
+        let position = d3.select(`#vc${i}`)
+          .attr('position');
+
+        let color = d3.select(`#vc${i}`).select('a-sphere')
+          .attr('color');
+
+        const x = scaleHash[`${i}`]['x'];
+        const y = scaleHash[`${i}`]['y'];
+        const z = scaleHash[`${i}`]['z'];
 
         d3.select('#trails')
           .append('a-sphere')
@@ -239,11 +224,18 @@
         sceneEl.addEventListener('loaded', render);
       }
 
-      // 128 beats per minutes is ~= 469 millisecond per beat
-      window.setInterval(sphere0Pulse, msPerBeat / 16);
-      window.setInterval(sphere1Pulse, msPerBeat / 16);
-      window.setInterval(sphere2Pulse, msPerBeat / 16);
-      window.setInterval(sphere3Pulse, msPerBeat / 16);
+      window.setInterval(sphere0Pulse, msPerBeat / 8);
+      window.setInterval(sphere1Pulse, msPerBeat / 8);
+      window.setInterval(sphere2Pulse, msPerBeat / 8);
+      window.setInterval(sphere3Pulse, msPerBeat / 8);
+
+      window.setInterval(makeAllTrails, msPerBeat / 16);
+
+      function makeAllTrails() {
+        [0, 1, 2, 3].forEach(d => {
+          makeTrails(d)
+        })
+      }
     </script>
   </body>
 </html>
