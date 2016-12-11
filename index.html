@@ -224,12 +224,12 @@
         sceneEl.addEventListener('loaded', render);
       }
 
-      window.setInterval(sphere0Pulse, msPerBeat / 8);
+      window.setInterval(sphere0Pulse, msPerBeat / 8); // 11
       window.setInterval(sphere1Pulse, msPerBeat / 8);
       window.setInterval(sphere2Pulse, msPerBeat / 8);
       window.setInterval(sphere3Pulse, msPerBeat / 8);
 
-      window.setInterval(makeAllTrails, msPerBeat / 16);
+      window.setInterval(makeAllTrails, msPerBeat / 32); // 33
 
       function makeAllTrails() {
         [0, 1, 2, 3].forEach(d => {
