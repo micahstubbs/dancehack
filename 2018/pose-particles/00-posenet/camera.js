@@ -14,11 +14,47 @@
  * limitations under the License.
  * =============================================================================
  */
+
+import np from 'node-particles';
+import PS from 'node-particles';
 import * as posenet from '@tensorflow-models/posenet';
 import dat from 'dat.gui';
 import Stats from 'stats.js';
 
-import {drawBoundingBox, drawKeypoints, drawSkeleton} from './demo_util';
+import {drawBoundingBox, drawKeypoints, drawSkeleton, drawPoint} from './demo_util';
+
+
+var ps = new np.ParticleSystem ();  // creates a new ParticleSystem instance
+
+// Creates an Emitter at x:188,y:158 whose particles have a x:3,y:0 speed.
+// Particles size is 15, ttl = -1, the position of the particle is jittered +/- 0.15 
+// and 1 particle to be emitted on every cycle.
+
+//(point,velocity, xsize, ysize, particleLife, spread, emissionRate) 
+
+ps.addEmitter (new PS.Point(10,100), new PS.Point(3,0), 15, 15, -1,1, 1);
+ps.addEmitter (new PS.Point(10,200), new PS.Point(3,0), 15, 15, -1,1, 1);
+ps.addEmitter (new PS.Point(10,300), new PS.Point(3,0), 15, 15, -1,1, 1);
+ps.addEmitter (new PS.Point(10,400), new PS.Point(3,0), 15, 15, -1,1, 1);
+
+ps.addField (new PS.Point(300, 200), -5);
+
+// Adds a field at x:254,y:211 with a mass of 500 (positive means attraction)
+//ps.addField (new PS.Point(243,211), 500);
+
+// Adds a field at x:443,y:411 with a -5 mass (repulsion)
+//ps.addField (new PS.Point(443,411), -5);
+
+// Run 10 cycles on the ParticleSystem. On each one the particles are generated
+// and the previous ones position is updated.
+ps.evolve(10);
+
+ps.getParticles().forEach (function (p) {
+  console.log(p.position); // displays each particle position
+});
+
+
+
 
 const videoWidth = 600;
 const videoHeight = 500;
@@ -258,7 +294,14 @@ function detectPoseInRealTime(video, net) {
       ctx.drawImage(video, 0, 0, videoWidth, videoHeight);
       ctx.restore();
     }
+    
+    ps.evolve(1);
 
+    ps.getParticles().forEach (function (p) {
+      drawPoint(ctx, p.position.x, p.position.y, 2, '#c2b280');
+      console.log(p.position); // displays each particle position
+    });
+    
     // For each pose (i.e. person) detected in an image, loop through the poses
     // and draw the resulting skeleton and keypoints if over certain confidence
     // scores
