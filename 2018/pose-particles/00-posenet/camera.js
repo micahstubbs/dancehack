@@ -30,6 +30,9 @@ import {
 
 const videoWidth = 600
 const videoHeight = 500
+
+/* particles code */
+/*
 var ps = new np.ParticleSystem() // creates a new ParticleSystem instance
 
 // Creates an Emitter at x:188,y:158 whose particles have a x:3,y:0 speed.
@@ -62,6 +65,7 @@ ps.evolve(10)
 ps.getParticles().forEach(function(p) {
   // console.log(p.position) // displays each particle position
 })
+*/
 
 const stats = new Stats()
 
@@ -321,12 +325,31 @@ function detectPoseInRealTime(video, net) {
       ctx.restore()
     }
 
+    /* particles code */
+    /*
+    // collision
+    ps.fields = []
+
+    poses.forEach(({ score, keypoints }) => {
+      for (let i = 0; i < keypoints.length; i++) {
+        const keypoint = keypoints[i]
+
+        if (keypoint.score < minPoseConfidence) {
+          continue
+        }
+
+        const { y, x } = keypoint.position
+        ps.addField(new PS.Point(y, x), -0.5)
+      }
+    })
+
     ps.evolve(1)
 
     ps.getParticles().forEach(function(p) {
       drawPoint(ctx, p.position.x, p.position.y, 2, '#c2b280')
       console.log(p.position) // displays each particle position
     })
+*/
 
     // For each pose (i.e. person) detected in an image, loop through the poses
     // and draw the resulting skeleton and keypoints if over certain confidence
