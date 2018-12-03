@@ -130,6 +130,7 @@ function setupGui(cameras, net) {
   }
 
   const gui = new dat.GUI({width: 300});
+  dat.GUI.toggleHide();
 
   // The single-pose algorithm is faster and simpler but requires only one
   // person to be in the frame or results will be innaccurate. Multi-pose works
@@ -207,7 +208,8 @@ function setupGui(cameras, net) {
  */
 function setupFPS() {
   stats.showPanel(0);  // 0: fps, 1: ms, 2: mb, 3+: custom
-  document.body.appendChild(stats.dom);
+  // hide stats for performance
+  // document.body.appendChild(stats.dom);
 }
 
 /**
