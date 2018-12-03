@@ -28,6 +28,8 @@ import {
   drawPoint
 } from './demo_util'
 
+const videoWidth = 600
+const videoHeight = 500
 var ps = new np.ParticleSystem() // creates a new ParticleSystem instance
 
 // Creates an Emitter at x:188,y:158 whose particles have a x:3,y:0 speed.
@@ -36,12 +38,16 @@ var ps = new np.ParticleSystem() // creates a new ParticleSystem instance
 
 //(point,velocity, xsize, ysize, particleLife, spread, emissionRate)
 
-ps.addEmitter(new PS.Point(10, 100), new PS.Point(1, 0), 15, 15, -1, 1, 1)
-ps.addEmitter(new PS.Point(10, 200), new PS.Point(1, 0), 15, 15, -1, 1, 1)
-ps.addEmitter(new PS.Point(10, 300), new PS.Point(1, 0), 15, 15, -1, 1, 1)
-ps.addEmitter(new PS.Point(10, 400), new PS.Point(1, 0), 15, 15, -1, 1, 1)
+// one large emitter at the top
+ps.addEmitter(new PS.Point(0, 0), new PS.Point(4, 0), 50, videoWidth, -1, 1, 10)
 
-ps.addField(new PS.Point(300, 200), -5)
+// many small emitters at the top
+// ps.addEmitter(new PS.Point(10, 100), new PS.Point(1, 0), 15, 15, 10, 1, 2)
+// ps.addEmitter(new PS.Point(10, 200), new PS.Point(1, 0), 15, 15, 10, 1, 2)
+// ps.addEmitter(new PS.Point(10, 300), new PS.Point(1, 0), 15, 15, 10, 1, 2)
+// ps.addEmitter(new PS.Point(10, 400), new PS.Point(1, 0), 15, 15, 10, 1, 2)
+
+ps.addField(new PS.Point(300, 200), -0.5)
 
 // Adds a field at x:254,y:211 with a mass of 500 (positive means attraction)
 //ps.addField (new PS.Point(243,211), 500);
@@ -57,8 +63,6 @@ ps.getParticles().forEach(function(p) {
   // console.log(p.position) // displays each particle position
 })
 
-const videoWidth = 600
-const videoHeight = 500
 const stats = new Stats()
 
 function isAndroid() {
